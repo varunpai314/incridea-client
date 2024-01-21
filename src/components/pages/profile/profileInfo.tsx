@@ -24,7 +24,7 @@ const ProfileInfo: FC<{
   }
 
   return (
-    <section className="text-white ">
+    <section className="h-fit text-white ">
       <div className="flex mb-4 items-center justify-center px-5">
         <a
           className={`titleFont text-2xl lg:text-4xl font-bold text-center pr-2`}

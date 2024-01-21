@@ -16,7 +16,7 @@ const UserEvents: FC<{
   const { data: events, loading, error } = useQuery(RegisterdEventsDocument);
 
   return (
-    <section className='py-1 px-2'>
+    <section className='h-fit py-1'>
       {/* <h1
         className={`titleFont text-2xl lg:text-4xl font-bold text-center text-white flex justify-center lg:max-w-full md:max-w-full max-w-sm`}
       >
