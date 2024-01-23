@@ -20,8 +20,8 @@ const EventCard: FC<{
           <Image
             src={event.image}
             alt={event.name}
-            width={500}
-            height={300}
+            width={800}
+            height={500}
             className="w-full h-full object-cover rounded-t-sm"
           />
         ) : (
@@ -37,14 +37,14 @@ const EventCard: FC<{
       </div>
 
       <div className="flex flex-col space-y-3 justify-center my-3 mx-2 text-gray-200">
-        <div className="flex items-center justify-center gap-1 w-full">
+        <div className="flex items-center justify-start gap-1 w-full">
           <div className="w-5">
             <IoLocationOutline />
           </div>
           <p className="text-sm font-medium text-center">{event?.venue}</p>
         </div>
 
-        <div className="flex items-center justify-center gap-1 w-full">
+        <div className="flex items-center justify-start gap-1 w-full">
           <div className="w-5">
             <RiNumbersLine />
           </div>
@@ -53,9 +53,6 @@ const EventCard: FC<{
           </p>
         </div>
       </div>
-      <button className="w-full bodyFont p-2 bg-black bg-opacity-30 text-gray-200 hover:bg-opacity-50 transition-colors duration-300 rounded-b-sm">
-        View Event
-      </button>
     </Link>
   );
 };
