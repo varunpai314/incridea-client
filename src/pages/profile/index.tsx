@@ -48,16 +48,17 @@ const Profile: NextPage = () => {
     <>
       <main
         ref={containerRef}
-        className="h-screen w-full flex flex-col md:flex-row bg-gradient-to-b pt-20 from-slate-800  via-slate-600 to-slate-500"
+        className="bg-gradient-to-b py-20 from-slate-800  via-slate-600 to-slate-500"
       >
-          {/* 2. Registered Events section & Teams section */}
-          <div className='flex w-fit m-4 bg-slate-700 rounded-lg mb-6 items-center justify-center'>
+        <div className='h-max w-full flex flex-col md:flex-row'>
 
+          {/* 2. Registered Events section & Teams section */}
+          <div className='h-dvh w-full m-4 bg-slate-700 rounded-lg'>
             <UserEvents userId={user?.id!} name={user.name} email={user.email} />
           </div>
 
           {/* 1. Profile Info section */}
-          <div className='flex bg-slate-700 rounded-lg w-fit m-4 mb-6 items-center justify-center'>
+          <div className='h-dvh bg-slate-700 rounded-lg w-full m-4'>
           <ProfileInfo user={user} />
           </div>
 
