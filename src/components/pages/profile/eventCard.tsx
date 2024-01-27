@@ -115,16 +115,6 @@ const EventCard: FC<{
               </div>
               <p className="text-sm font-medium text-left ">{event?.venue}</p>
             </div>
-
-            <div className="flex items-center justify-start gap-1 w-full">
-              <div className="w-5">
-                <RiNumbersLine />
-              </div>
-              <p className="text-sm font-medium text-center">
-                {event?.rounds.length} Round{event?.rounds.length > 1 && 's'}
-              </p>
-            </div>
-          </div>    
         </div>
         <div className="flex justify-center">
           {teams?.map((team: Team) => (
@@ -179,6 +169,15 @@ const EventCard: FC<{
             />
           ))}
         </div>
+        <div className="flex items-center justify-start gap-1 w-full">
+          <div className="w-5">
+            <RiNumbersLine />
+          </div>
+          <p className="text-sm font-medium text-center">
+            {event?.rounds.length} Round{event?.rounds.length > 1 && 's'}
+          </p>
+        </div>
+      </div>
     </Link>
   );
 };

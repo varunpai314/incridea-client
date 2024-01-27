@@ -55,6 +55,7 @@ const Profile: NextPage = () => {
 
           {/* 2. Registered Events section & Teams section */}
           <div className='h-full w-full rounded-lg lg:overflow-auto bg-[#ababab] backdrop-filter backdrop-blur-xl px-3 pb-5 bg-opacity-10 border-gray-200/30 '>
+
             <UserEvents userId={user?.id!} name={user.name} email={user.email} />
           </div>
 
