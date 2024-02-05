@@ -1,340 +1,318 @@
-// import { User } from '@/src/generated/generated';
-
-// import { motion } from 'framer-motion';
-// import Image from 'next/image';
-// import Link from 'next/link';
-// import { QRCodeSVG } from 'qrcode.react';
-// import { FC, useEffect } from 'react';
-// import { FaSignOutAlt, FaDice } from 'react-icons/fa';
-// import { MdOutlineEmail, MdPhone } from 'react-icons/md';
-// import TextAnimation from '../../animation/text';
-// import { idToPid } from '@/src/utils/id';
-// import Button from '../../button';
-// import { signOut } from 'next-auth/react';
-// import { useRouter } from 'next/router';
-// // import { GiShipWheel } from 'react-icons/gi';
-
-// const ProfileInfo: FC<{
-//   user: User | null | undefined;
-// }> = ({ user }) => {
-//   const router = useRouter();
-
-//   if (user?.role === 'USER') {
-//     router.push('/register');
-//   }
-
-//   return (
-//     <section className="p-0 text-white h-full flex justify-center items-center">
-//       {/* <div className="flex mb-4 items-center justify-center px-5">
-//         <a
-//           className={`titleFont text-2xl lg:text-4xl font-bold text-center pr-2`}
-//         >
-//           Welcome Gamer!
-//         </a>
-//         <FaDice className="text-3xl lg:text-6xl animate-bounce-and-spin" />
-//       </div> */}
-//       {/* <TextAnimation
-//         text="Ready to begin?"
-//         textStyle="text-lg lg:text-2xl bodyFont"
-//         className="flex items-center justify-center"
-//       /> */}
-
-//  <div className='flex flex-col h-full px-2 lg:pt-0 pt-20 justify-center items-center'>
-//   <div className='flex flex-row items-center'>
-
-//       {/* /profile picture ka div */}
-//       <div className='justify-center items-start flex'>
-//            <Image
-//                 src={'/assets/png/c.png'}
-//                 width={150}
-//                 height={150}
-//                 alt="map"
-//               />
-//       </div>
-
-      
-
-//       {/* //contents ka div */}
-//       <div className='flex flex-col px-4'>
-//             <a className={`text-xl font-bold titleFont`}>
-//             {user?.name}
-//           </a>
-//           <a className="text-sm flex items-center gap-5 bodyFont">
-//             {user?.college?.name || '-'}
-//           </a>
-//           {/* <span className="font-bold text-xl">Contact details</span> */}
-//           <div className="flex gap-2 items-center">
-//               <MdOutlineEmail />
-
-//               {user?.email}
-//             </div>
-//              {user?.phoneNumber && (
-//               <div className="flex gap-2 items-center">
-//                 <MdPhone />
-//                 {user?.phoneNumber}
-//               </div>
-//             )}
-//             <Button
-//               onClick={() => signOut()}
-//               className="mt-1 w-fit"
-//               intent={'danger'}
-//             > <FaSignOutAlt className="inline-block mr-1" />
-//               Sign Out
-//             </Button>
-
-//       </div>
-
-       
-
-//   </div>
-//   <div className='flex flex-row justify-around items-center w-full mt-5'>
-//       {/* //leaderboard and level div */}
-//       <div className='flex flex-row space-x-1'>
-          
-//                 <Image
-//                 src={'/assets/png/trophy.png'}
-//                 width={45}
-//                 height={45}
-//                 alt="map"
-               
-//                 />
-          
-//             <div className=''>
-//                 <p className='text-sm'>leaderboard</p>
-//                 <p>80/100</p>
-//             </div>
-//       </div>
-
-//       <div className='flex flex-row space-x-1'>
-          
-//                 <Image
-//                 src={'/assets/png/money.png'}
-//                 width={45}
-//                 height={50}
-//                 alt="map"
-               
-//               />
-          
-//             <div className=''>
-//                 <p className='text-sm'>coins</p>
-//                 <p>100</p>
-//             </div>
-//       </div>
-
-//       <div className='flex flex-row space-x-1'>
-          
-//                 <Image
-//                 src={'/assets/png/level.png'}
-//                 width={45}
-//                 height={45}
-//                 alt="map"
-                
-//               />
-          
-//             <div className=''>
-//                 <p className='text-sm'>level</p>
-//                 <p>3</p>
-//             </div>
-//       </div>       
-//   </div>
-
-//   <div className='flex flex-col text-center text-white justify-center items-center mt-5'>
-//       {/* qr code div*/}
-//       <div>
-//       {/* <p className='mb-5 text-base font-bold'>My destiny card...</p> */}
-//               <div className=''><QRCodeSVG
-//                 value={idToPid(user?.id!)}
-//                 size={120}
-//                 bgColor="#fff"
-//               /></div>
-//                <a className={`titleFont text-[#fff] text-xl p-2 mt-5`}>
-//                 {idToPid(user?.id!)}
-//               </a>
-//         </div>
-//   </div>
-// </div>
-//     </section>
-//   );
-// };
-
-// export default ProfileInfo;
-import { AccommodationRequestsByUserDocument, User } from '@/src/generated/generated';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
-import { QRCodeSVG } from 'qrcode.react';
-import { FC, useEffect, useState } from 'react';
-import { FaSignOutAlt, FaDice } from 'react-icons/fa';
-import { MdOutlineEmail, MdPhone } from 'react-icons/md';
-import TextAnimation from '../../animation/text';
-import { idToPid } from '@/src/utils/id';
-import Button from '../../button';
-import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { useQuery } from '@apollo/client';
-import Spinner from '../../spinner';
-import ViewUserAccommodation from './viewUserAccommodation';
-// import { GiShipWheel } from 'react-icons/gi';
+import {
+  AccommodationRequestsByUserDocument,
+  GetUserXpDocument,
+  GetXpLeaderboardDocument,
+  User,
+} from "@/src/generated/generated";
+import Image from "next/image";
+import { QRCodeSVG } from "qrcode.react";
+import { FC, useEffect, useState } from "react";
+import { FaSignOutAlt, FaAward } from "react-icons/fa";
+import { MdAddAPhoto, MdOutlineEmail, MdPhone } from "react-icons/md";
+import { idToPid } from "@/src/utils/id";
+import Button from "../../button";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
+import Spinner from "../../spinner";
+import ViewUserAccommodation from "./viewUserAccommodation";
+import AvatarModal from "./avatarModal";
+import { RiHotelBedLine } from "react-icons/ri";
 
 const ProfileInfo: FC<{
   user: User | null | undefined;
 }> = ({ user }) => {
   const router = useRouter();
-    const {
+  let {
     data: dataAccommodation,
     loading: loadingAccommodation,
     error: errorAccommodation,
   } = useQuery(AccommodationRequestsByUserDocument);
 
   const [showModal, setShowModal] = useState(false);
+  const [avatarModal, setAvatarModal] = useState(false);
 
-  if (user?.role === 'USER') {
-    router.push('/register');
+  if (user?.role === "USER") {
+    router.push("/register");
   }
 
+  const [level, setLevel] = useState(0);
+  const [xp, setXp] = useState(0);
+  const [userId, setUser] = useState("");
+  const [rank, setRank] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [needMore, setNeedMore] = useState(0);
+
+  const userXp = useQuery(GetUserXpDocument, {});
+
+  useEffect(() => {
+    if (
+      userXp?.data &&
+      userXp.data.getUserXp.__typename === "QueryGetUserXpSuccess"
+    ) {
+      const totalXp = userXp.data.getUserXp?.data?.reduce(
+        (acc, curr) => acc + curr.level.point,
+        0
+      );
+
+      // Calculate the level thresholds dynamically
+      const levels = userXp.data.getUserXp?.data?.length || 0;
+      const newLevelThresholds = Array.from(
+        { length: levels + 1 },
+        (_, i) => (i + 1) * 10
+      );
+
+      // Calculate the user's current level based on the thresholds
+      let level = 0;
+      let totalPoints = 0;
+      for (let i = 0; i < newLevelThresholds.length; i++) {
+        if (totalXp >= totalPoints + newLevelThresholds[i]) {
+          level++;
+          totalPoints += newLevelThresholds[i];
+        } else {
+          break;
+        }
+      }
+
+      setLevel(level);
+      setXp(totalXp);
+      setUser(userXp.data.getUserXp?.data[0]?.user.id);
+      const xpNext = newLevelThresholds.reduce((acc, curr) => acc + curr, 0);
+      setNeedMore(xpNext - totalXp);
+      setProgress(100 - ((xpNext - totalXp) / xpNext) * 100);
+    }
+  }, [userXp.data]);
+
+  interface UserTotalPoints {
+    [userId: string]: {
+      levelPoints: number;
+      name: string;
+      count: number;
+    };
+  }
+  const { data: Leaderboard, loading: leaderboardLoading } = useQuery(
+    GetXpLeaderboardDocument,
+    {}
+  );
+
+  const [sortedLeaderboard, setSortedLeaderboard] = useState<
+    {
+      levelPoints: number;
+      name: string;
+      userId: string;
+      count: number;
+    }[]
+  >([]);
+
+  useEffect(() => {
+    if (
+      Leaderboard?.getXpLeaderboard.__typename ===
+      "QueryGetXpLeaderboardSuccess"
+    ) {
+      const userTotalPoints: UserTotalPoints = {};
+
+      Leaderboard?.getXpLeaderboard.data.forEach((item) => {
+        const userId: string = item.user.id;
+        const levelPoints: number = item.level.point;
+        const userName: string = item.user.name;
+        const levelCount: number = 1;
+
+        // Check if the user ID is already in the userTotalPoints object
+        if (userTotalPoints[userId]) {
+          // If yes, add the level points to the existing total
+          userTotalPoints[userId].levelPoints += levelPoints;
+          userTotalPoints[userId].count += levelCount;
+        } else {
+          // If no, create a new entry for the user ID
+          userTotalPoints[userId] = {
+            levelPoints,
+            name: userName,
+            count: 1,
+          };
+        }
+      });
+      // Convert userTotalPoints to an array of objects
+      const userTotalPointsArray = Object.entries(userTotalPoints).map(
+        ([userId, data]) => ({
+          userId,
+          ...data,
+        })
+      );
+
+      // Sort the array in descending order based on total points
+      userTotalPointsArray.sort((a, b) => b.levelPoints - a.levelPoints);
+      console.log(userTotalPointsArray);
+      // get current user's rank
+      const currentUserRank = userTotalPointsArray.findIndex(
+        (user) => user.userId === userId
+      );
+      console.log(currentUserRank);
+      setRank(currentUserRank + 1);
+    }
+  }, [Leaderboard, userId]);
+
   return (
-    <section className="text-white h-full flex pt-20 lg:w-full lg:pt-0 justify-center items-center">
- 
-
- <div className='flex flex-col h-full px-2 lg:p-3 lg:pt-0 justify-center items-start'>
-  <div className='flex flex-row 2xl:flex-col items-center'>
-
-      {/* /profile picture ka div */}
-      <div className='justify-center items-start flex'>
-           <Image
-                src={'/assets/png/c.png'}
-                width={130}
-                height={130}
+    <div className="bg-primary-500 text-white flex flex-col justify-between items-center h-full px-4 md:px-8 py-4 md:py-8 border border-primary-200/80 rounded-xl">
+      <div className="flex gap-5 flex-col">
+        <div
+          className="justify-center items-start flex"
+          onClick={() => setAvatarModal(true)}
+        >
+          <AvatarModal showModal={avatarModal} setShowModal={setAvatarModal} />
+          <div className="relative group">
+            <Image
+              src={user?.profileImage || ""}
+              width={180}
+              height={180}
+              alt="avatar"
+              className="p-3 rounded-xl border hover:border-4 transition-all duration-300 cursor-pointer hover:border-primary-100/50 border-primary-100/30"
+            />
+            <div className="absolute bottom-3 right-3 p-2 bg-secondary-700 rounded-full scale-0 group-hover:scale-100 transition-all duration-300">
+              <MdAddAPhoto />
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col text-center h-full items-center justify-center space-y-1">
+          <span className="text-2xl lg:text-3xl font-bold">{user?.name}</span>
+          <span className="bodyFont">{user?.college?.name || "-"}</span>
+        </div>
+        <div className="relative mb-5 pt-1">
+          <div className="mb-4 flex rounded-full bg-gray-100 text-xs h-3">
+            <div
+              style={{ width: `${progress}%` }}
+              className="bg-secondary-700 border border-white rounded-full"
+            ></div>
+          </div>
+          <div className="flex justify-between items-center text-lg">
+            <div className="flex flex-row space-x-2 items-center ">
+              <Image
+                src={"/assets/png/XP.webp"}
+                width={20}
+                height={20}
                 alt="map"
               />
-      </div>
-
-      
-
-      {/* //contents ka div */}
-      <div className='flex flex-col px-4'>
-            <a className={`text-xl font-bold titleFont`}>
-            {user?.name}
-          </a>
-          <a className="text-sm flex items-center gap-5 bodyFont">
-            {user?.college?.name || '-'}
-          </a>
-            {/* <Button
-              onClick={() => signOut()}
-              className="mt-1 w-fit"
-              intent={'primary'}
-            > <FaSignOutAlt className="inline-block mr-1" />
-              Sign Out
-            </Button> */}
-            <ViewUserAccommodation
-        showModal={showModal}
-        setShowModal={setShowModal}
-      />
-            {
-              loadingAccommodation ? (
-                <Button size={'small'} onClick={()=>setShowModal(true)} className="w-max mt-3 md:mt-2"><Spinner size={'small'} className="text-[#dd5c6e]" /></Button>
-                
-              ) : dataAccommodation?.accommodationRequestsByUser[0]?.status?
-              (<Button size={'small'} onClick={()=>setShowModal(true)} className="w-max mt-3 md:mt-2">View Request</Button>):
-            (<Button size={'small'} onClick={()=>router.push("/accommodation")} className="w-max mt-3 md:mt-2">Accommodate Me</Button>)
-            }
-
-      </div>
-
-       
-
-  </div>
-  <div className='flex lg:flex-row justify-around space-x-5 items-center w-full  mt-3'>
-      {/* //leaderboard and level div */}
-      <div className='flex flex-row'>
-          
-                <Image
-                src={'/assets/png/trophy.png'}
-                width={45}
-                height={65}
-                alt="map"
-                className='h-full w-full'
-                />
-          
-            <div className=''>
-                <p className='text-sm'>Leaderboard</p>
-                <p>80/100</p>
+              <p>{xp} XP</p>
             </div>
-      </div>
 
-      <div className='flex flex-row space-x-1'>
-          
-                <Image
-                src={'/assets/png/coin.png'}
-                width={45}
-                height={50}
+            <div className="flex flex-row space-x-1 items-center">
+              <p>Level {level}</p>
+              <Image
+                src={"/assets/png/level.png"}
+                width={25}
+                height={25}
                 alt="map"
-               
               />
-          
-            <div className=''>
-                <p className='text-sm'>Gold</p>
-                <p>100</p>
             </div>
+          </div>
+        </div>
       </div>
 
-      <div className='flex flex-row space-x-1'>
-          
-                <Image
-                src={'/assets/png/level.png'}
-                width={45}
-                height={45}
-                alt="map"
-                
-              />
-          
-            <div className=''>
-                <p className='text-sm'>Level</p>
-                <p>3</p>
+      <div className="text-xs md:text-lg flex flex-row items-center justify-between space-x-2 border border-primary-200/30 rounded-full w-full px-5 py-1">
+        <div className="flex items-center gap-2">
+          <Image
+            src={"/assets/png/trophy.png"}
+            width={100}
+            height={100}
+            alt="map"
+            className="sm:h-16 sm:w-16 h-12 w-12"
+          />
+
+          <div>
+            <p className="">Leaderboard</p>
+            <p className="text-secondary-600 font-bold">Rank {rank}</p>
+          </div>
+        </div>
+
+        <p className="text-center">
+          You need <br />
+          <span className="text-secondary-600 font-bold">{needMore} XP</span> to
+          level up!
+        </p>
+      </div>
+
+      <div className="flex sm:flex-row flex-col-reverse gap-5 justify-between w-full items-center border rounded-xl p-3 mt-3 border-primary-200/30">
+        <section className="flex flex-col gap-y-4 sm:items-start items-center justify-center w-full">
+          <div className="flex w-full justify-between h-full items-center ">
+            <QRCodeSVG
+              value={idToPid(user?.id!)}
+              size={100}
+              bgColor="transparent"
+              color="#ffffff"
+              fgColor="#ffffff"
+            />
+            <div>
+              <span className={`text-[#fff] sm:text-xl text-md`}>
+                {idToPid(user?.id!)}
+              </span>
+              <span className="flex gap-x-2 items-center">
+                <MdOutlineEmail />
+                {user?.email}
+              </span>
+              <span className="flex gap-x-2 items-center justify-center sm:justify-start">
+                <MdPhone />
+                {user?.phoneNumber}
+              </span>
             </div>
-      </div>       
-  </div>
+          </div>
 
-  <div className='flex flex-row text-white justify-between items-center w-full px-3 mt-3'>
-      <div className='flex justify-end h-full flex-col'>
-      <p className="font-bold text-sm px-0">Contact details:</p>
-      <div className="flex gap-2 items-center">
-           <MdOutlineEmail />
-
-            {user?.email}
-           </div>
-            {user?.phoneNumber && (
-              <div className="flex gap-2 items-center">
-                 <MdPhone />
-                 {user?.phoneNumber}
-               </div>
-             )}
-           <div className=''>
+          <div className="space-y-2 w-full">
+            <div className="flex items-center justify-between">
+              <ViewUserAccommodation
+                showModal={showModal}
+                setShowModal={setShowModal}
+              />
+              {loadingAccommodation ? (
+                <Button
+                  size={"large"}
+                  onClick={() => setShowModal(true)}
+                  className="w-max !rounded-full bodyFont !tracking-normal !text-sm justify-center"
+                >
+                  <Spinner size={"small"} className="text-[#dd5c6e]" />
+                </Button>
+              ) : dataAccommodation?.accommodationRequestsByUser[0]?.status ? (
+                <Button
+                  intent={"info"}
+                  size={"large"}
+                  onClick={() => setShowModal(true)}
+                  className="w-max !rounded-full bodyFont !tracking-normal !text-sm justify-center"
+                >
+                  <RiHotelBedLine className="inline-block mr-1" />
+                  View Request
+                </Button>
+              ) : (
+                <Button
+                  intent={"success"}
+                  size={"large"}
+                  onClick={() => router.push("/accommodation")}
+                  className="!rounded-full bodyFont !tracking-normal !text-sm justify-center"
+                >
+                  <RiHotelBedLine className="inline-block mr-1" />
+                  Accommodation
+                </Button>
+              )}
+              <Button
+                onClick={() => router.push("/leaderboard")}
+                className="!rounded-full bodyFont !tracking-normal !text-sm justify-center"
+                intent={"info"}
+                size={"large"}
+              >
+                <FaAward className="inline-block mr-1" />
+                Leaderboard
+              </Button>
+            </div>
             <Button
               onClick={() => signOut()}
-              className="mt-1 w-fit"
-              intent={'danger'}
-              size={'small'}
-            > <FaSignOutAlt className="inline-block #dc2626" />
+              className="w-full !rounded-full bodyFont !tracking-normal !text-sm justify-center"
+              intent={"danger"}
+              size={"large"}
+            >
+              <FaSignOutAlt className="inline-block mr-1" />
               Sign Out
-            </Button> </div>
+            </Button>
+          </div>
+        </section>
       </div>
-      {/* qr code div*/}
-      <div>
-              <div className=''><QRCodeSVG
-                value={idToPid(user?.id!)}
-                size={110}
-                bgColor="transparent"
-                color="#ffffff"
-        fgColor="#ffffff"
-              /></div>
-               <a className={`titleFont text-[#fff] text-lg  mt-5`}>
-                {idToPid(user?.id!)}
-              </a>
-        </div>
-  </div>
-</div>
-    </section>
+    </div>
   );
 };
 

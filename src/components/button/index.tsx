@@ -1,19 +1,21 @@
+import { VikingHell } from "@/src/pages/_app";
 import { cva, VariantProps } from "class-variance-authority";
+import React, { ReactChildren, ReactElement } from "react";
 
 const buttonStyles = cva(
-  `flex gap-2 items-center transition-all font-VikingHell tracking-widest duration-300 ease-in-out`,
+  `flex gap-2 items-center transition-all ${VikingHell.className} tracking-widest duration-300 ease-in-out`,
   {
     variants: {
       intent: {
         primary:
-          "bg-gradient-to-tr from-secondary-800 to-secondary-600 text-white",
+          "bg-gradient-to-tr from-secondary-800 to-secondary-600 text-white -skew-x-12",
         secondary: "bg-gray-700 text-gray-200 hover:bg-gray-600",
         danger: "bg-red-500 text-white hover:bg-red-600",
         success: "bg-green-500 text-white hover:bg-green-600",
         info: "bg-teal-500 text-white hover:bg-teal-600",
         dark: "bg-gray-900/60 text-white hover:bg-opacity-30",
         ghost:
-          "bg-transparent border-secondary-700 border text-secondary-700 backdrop-blur-md",
+          "bg-transparent border-secondary-700 border text-secondary-700 -skew-x-12 backdrop-blur-md",
       },
       size: {
         small: ["text-sm", "py-1", "px-2"],
@@ -66,7 +68,6 @@ interface ButtonProps
   variant?: string;
   children?: React.ReactNode;
   className?: string;
-  skew?: boolean;
 }
 
 const Button = ({
@@ -78,17 +79,16 @@ const Button = ({
   disabled,
   className,
   noScaleOnHover,
-  skew,
   variant,
   ...props
 }: ButtonProps) => {
   return (
     <button
-      className={`${skew ? "-skew-x-12" : ""} ${
+      className={`${
         noScaleOnHover
           ? "hover:scale-100"
           : "transition-transform duration-300 ease-in-out hover:scale-105"
-      } ${className + " active:scale-90 rounded-full"} ${buttonStyles({
+      } ${className + " active:scale-90 "} ${buttonStyles({
         intent,
         size,
         fullWidth,

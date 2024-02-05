@@ -1,31 +1,63 @@
-import React, { Suspense, useEffect, useRef } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { getProject } from "@theatre/core";
 // import studio from "@theatre/studio";
+import { PerspectiveCamera, SheetProvider, editable as e } from "@theatre/r3f";
 import extension from "@theatre/r3f/dist/extension";
-import { SheetProvider, editable as e, PerspectiveCamera } from "@theatre/r3f";
 // import dynamic from "next/dynamic";
 import { ScrollControls } from "@react-three/drei";
-// import { Scene1 } from "@/src/components/scene/scene1";
-import scene1 from "../../../public/assets/3d/state4.json";
+import BookModal from "@/src/components/explore/BookModal";
+import ExploreNav from "@/src/components/explore/exploreNav";
+import Pokedex from "@/src/components/pokedex";
+import useStore from "@/src/components/store/store";
+import {
+  PublishedEventsDocument,
+  PublishedEventsQuery,
+} from "@/src/generated/generated";
+import { client } from "@/src/lib/apollo";
+import { useQuery } from "@apollo/client";
 import studio from "@theatre/studio";
 import dynamic from "next/dynamic";
-import useStore from "@/src/components/store/store";
-import BookModal from "@/src/components/explore/BookModal";
-import Pokedex from "@/src/components/pokedex";
-const Scene1 = dynamic(() => import("@/src/components/scene/scene1"), {
+import scene1 from "../../../public/assets/3d/state4.json";
+import AudioPlayer from "@/src/components/explore/AudioPlayer";
+
+const Scene1 = dynamic(() => import("@/src/components/scene1"), {
   ssr: false,
 });
+// import studio from "@theatre/studio";
+// import extension from "@theatre/r3f/dist/extension";
 
 // studio.extend(extension);
 // studio.initialize();
 
 const demoSheet = getProject("Scene 1", { state: scene1 }).sheet("Scene 1");
 const App = () => {
+  const {
+    data: eventsData,
+    loading: eventLoading,
+    error: eventError,
+  } = useQuery<PublishedEventsQuery>(PublishedEventsDocument);
+
+  let tempFilteredEvents = eventsData?.publishedEvents;
+
+  tempFilteredEvents = tempFilteredEvents?.filter(
+    (event) => event.category === "CORE"
+  );
+
+  const events: Array<{ id: string; name: string; image: string }> =
+    tempFilteredEvents?.map((event) => ({
+      id: event.id,
+      name: event.name || "",
+      image: event.image || "",
+    })) || [];
+
   const modalRef = useRef(null);
   const sponsorBookRef = useRef(null);
   const eventDex = useStore((state) => state.eventDex);
   const sponsor = useStore((state) => state.sponsor);
+
+  const [isMuted, setIsMuted] = useState(true);
+  const mainThemeAudioRef = useRef<HTMLAudioElement | null>(null);
   // useEffect(() => {
   //   demoSheet.project.ready.then(() =>
   //     demoSheet.sequence.play({ iterationCount: Infinity, range: [0, 1] })
@@ -34,6 +66,13 @@ const App = () => {
 
   return (
     <div className="w-full h-screen">
+      <AudioPlayer
+        mainThemeAudioRef={mainThemeAudioRef}
+        mainTheme="/audio/level2/main.mp3"
+        isMuted={isMuted}
+        setIsMuted={setIsMuted}
+      ></AudioPlayer>
+      <ExploreNav />
       <Suspense>
         <Canvas
           gl={{
@@ -70,10 +109,18 @@ const App = () => {
         </Canvas>
       </Suspense>
       <div className="" ref={modalRef}>
-        {eventDex && <Pokedex />}
+        {eventDex && (
+          <Pokedex
+            isMuted={isMuted}
+            mainThemeAudioRef={mainThemeAudioRef}
+            data={events}
+          />
+        )}
       </div>
       <div className="" ref={sponsorBookRef}>
-        {sponsor && <BookModal />}
+        {sponsor && (
+          <BookModal isMuted={isMuted} mainThemeAudioRef={mainThemeAudioRef} />
+        )}
       </div>
     </div>
   );
